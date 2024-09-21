@@ -1,0 +1,34 @@
+require("dotenv/config");
+const { Keystone } = require("@keystonejs/keystone");
+const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
+const { GraphQLApp } = require("@keystonejs/app-graphql");
+const { AdminUIApp } = require("@keystonejs/app-admin-ui");
+const initialiseData = require("./initial-data");
+const mongoAdapter = require("./utils/db");
+
+const PROJECT_NAME = "events-sphere";
+
+const keystone = new Keystone({
+    adapter: mongoAdapter,
+    onConnect: process.env.CREATE_TABLES !== "true" && initialiseData,
+});
+
+keystone.createList("User", require("./lists/user"));
+
+const authStrategy = keystone.createAuthStrategy({
+    type: PasswordAuthStrategy,
+    list: "User",
+    config: { protectIdentities: process.env.NODE_ENV === "production" },
+});
+
+module.exports = {
+    keystone,
+    apps: [
+        new GraphQLApp(),
+        new AdminUIApp({
+            name: PROJECT_NAME,
+            enableDefaultRoute: true,
+            authStrategy,
+        }),
+    ],
+};
