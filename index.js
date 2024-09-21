@@ -5,6 +5,7 @@ const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const initialiseData = require("./initial-data");
 const mongoAdapter = require("./utils/db");
+const access = require("./utils/accessControl");
 
 const PROJECT_NAME = "events-sphere";
 
@@ -29,6 +30,7 @@ module.exports = {
             name: PROJECT_NAME,
             enableDefaultRoute: true,
             authStrategy,
+            isAccessAllowed: access.userIsAdmin,
         }),
     ],
 };
