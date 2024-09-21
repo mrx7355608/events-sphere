@@ -1,14 +1,11 @@
 // Access control functions
 const userIsAdmin = ({ authentication: { item: user } }) => {
-    return Boolean(user && user.isAdmin);
+    return Boolean(user && user.role.toLowerCase() === "admin");
 };
 const userOwnsItem = ({ authentication: { item: user } }) => {
     if (!user) {
         return false;
     }
-
-    // Instead of a boolean, you can return a GraphQL query:
-    // https://www.keystonejs.com/api/access-control#graphqlwhere
     return { id: user.id };
 };
 
