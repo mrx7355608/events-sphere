@@ -1,29 +1,36 @@
 require("dotenv/config");
-const { Keystone } = require("@keystonejs/keystone");
 const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
-const initialiseData = require("./initial-data");
-const mongoAdapter = require("./utils/db");
+const keystone = require("./keystone");
 const access = require("./utils/accessControl");
+const acceptApplication = require("./mutations/acceptApplication");
 
 const PROJECT_NAME = "Events Sphere";
 
-const keystone = new Keystone({
-    adapter: mongoAdapter,
-    onConnect: process.env.CREATE_TABLES !== "true" && initialiseData,
-});
-
+// Setup keystone lists
 keystone.createList("User", require("./lists/user"));
 keystone.createList("Event", require("./lists/event"));
 keystone.createList("Application", require("./lists/application"));
 
+// Setup auth strategy
 const authStrategy = keystone.createAuthStrategy({
     type: PasswordAuthStrategy,
     list: "User",
     config: { protectIdentities: process.env.NODE_ENV === "production" },
 });
 
+// Add custom mutations
+keystone.extendGraphQLSchema({
+    mutations: [
+        {
+            schema: "acceptApplication(id: ID!): Application",
+            resolver: acceptApplication,
+        },
+    ],
+});
+
+// Setup keystone app
 module.exports = {
     keystone,
     apps: [

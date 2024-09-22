@@ -1,4 +1,4 @@
-const { Text, Relationship } = require("@keystonejs/fields");
+const { Text, Select, Relationship } = require("@keystonejs/fields");
 const {
     AuthedRelationship,
 } = require("@keystonejs/fields-authed-relationship");
@@ -31,8 +31,11 @@ module.exports = {
             many: false,
         },
         status: {
-            type: Text,
+            type: Select,
+            options: "approved, rejected, pending",
             defaultValue: "pending",
+            dataType: "string",
+            isRequired: true,
             access: {
                 update: accessControls.userIsAdmin,
             },
