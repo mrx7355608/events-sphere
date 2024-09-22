@@ -7,7 +7,7 @@ const initialiseData = require("./initial-data");
 const mongoAdapter = require("./utils/db");
 const access = require("./utils/accessControl");
 
-const PROJECT_NAME = "events-sphere";
+const PROJECT_NAME = "Events Sphere";
 
 const keystone = new Keystone({
     adapter: mongoAdapter,
@@ -15,6 +15,8 @@ const keystone = new Keystone({
 });
 
 keystone.createList("User", require("./lists/user"));
+keystone.createList("Event", require("./lists/event"));
+keystone.createList("Application", require("./lists/application"));
 
 const authStrategy = keystone.createAuthStrategy({
     type: PasswordAuthStrategy,

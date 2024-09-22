@@ -2073,6 +2073,14 @@
   dependencies:
     loader-utils "^2.0.0"
 
+"@keystonejs/fields-authed-relationship@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@keystonejs/fields-authed-relationship/-/fields-authed-relationship-1.1.2.tgz#38b57bc913ee5bcb29d561fb10fa7c400a7191c8"
+  integrity sha512-OOqsyJ+3ucETNZVphWaoJa3a1GpKIAECpLxV0yJBGJg5A/MJDY8mI5wL6GwBxrLbaUpBAo0YlS3MtDiRk6aVTQ==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
+    "@keystonejs/fields" "^22.1.3"
+
 "@keystonejs/fields-auto-increment@^8.2.2":
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/@keystonejs/fields-auto-increment/-/fields-auto-increment-8.2.2.tgz#b9a43507c93c8fd01ba68aaa239d58019ae96589"

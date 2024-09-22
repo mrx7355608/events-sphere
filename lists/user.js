@@ -1,4 +1,4 @@
-const { Text, Password, Select } = require("@keystonejs/fields");
+const { Text, Password, Select, Relationship } = require("@keystonejs/fields");
 const access = require("../utils/accessControl");
 const checkAdminRoleOnSignup = require("../hooks/checkAdminRoleOnSignup");
 
@@ -40,5 +40,3 @@ const User = {
 };
 
 module.exports = User;
-
-// List-level access controls
