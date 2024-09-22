@@ -40,9 +40,24 @@ module.exports = {
     },
 
     access: {
-        read: accessControls.userIsAdminOrOwner,
-        update: accessControls.userIsAdminOrOwner,
-        delete: accessControls.userIsAdminOrOwner,
+        read: ({ authentication: { item: user } }) => {
+            if (!user) return false;
+            if (user.role === "attendee") return false;
+            if (user.role === "admin") return true;
+            return { exhibitor: { id: user.id } };
+        },
+        update: ({ authentication: { item: user } }) => {
+            if (!user) return false;
+            if (user.role === "attendee") return false;
+            if (user.role === "admin") return true;
+            return { exhibitor: { id: user.id } };
+        },
+        delete: ({ authentication: { item: user } }) => {
+            if (!user) return false;
+            if (user.role === "attendee") return false;
+            if (user.role === "admin") return true;
+            return { exhibitor: { id: user.id } };
+        },
     },
 
     hooks: {

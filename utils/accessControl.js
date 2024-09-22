@@ -16,7 +16,7 @@ let access = { userIsAdmin, userOwnsItem, isSignedIn };
 
 const userIsAdminOrOwner = (auth) => {
     const isAdmin = access.userIsAdmin(auth);
-    const isOwner = access.userOwnsItem(auth).id ? true : false;
+    const isOwner = access.userOwnsItem(auth);
     return isAdmin ? isAdmin : isOwner;
 };
 
