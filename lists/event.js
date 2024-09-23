@@ -24,10 +24,16 @@ const Event = {
         defaultSort: "date",
     },
     access: {
-        read: accessControls.isSignedIn,
-        create: accessControls.userIsAdmin,
-        update: accessControls.userIsAdmin,
+        // read: accessControls.isSignedIn,
+        // create: accessControls.userIsAdmin,
+        // update: accessControls.userIsAdmin,
         delete: accessControls.userIsAdmin,
+    },
+    hooks: {
+        resolveInput: ({ resolvedData }) => {
+            console.log({ resolvedData });
+            return resolvedData;
+        },
     },
     labelField: "title",
 };

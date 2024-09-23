@@ -6,6 +6,7 @@ const keystone = require("./keystone");
 const access = require("./utils/accessControl");
 const acceptApplication = require("./mutations/acceptApplication");
 const rejectApplication = require("./mutations/rejectApplication");
+const registerForEvent = require("./mutations/registerForEvent");
 
 const PROJECT_NAME = "Events Sphere";
 
@@ -31,6 +32,10 @@ keystone.extendGraphQLSchema({
         {
             schema: "rejectApplication(id: ID!): Application",
             resolver: rejectApplication,
+        },
+        {
+            schema: "registerForEvent(id: ID!): Event",
+            resolver: registerForEvent,
         },
     ],
 });
