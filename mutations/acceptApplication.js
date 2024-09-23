@@ -15,8 +15,8 @@ async function acceptApplication(_, { id }, context) {
     if (!application) throw new Error("Application not found");
 
     // 3. Check if application is already accepted
-    if (application.status === "approved")
-        throw new Error("Application already approved");
+    // if (application.status === "approved")
+    //     throw new Error("Application already approved");
 
     // 4. Accept application
     const updatedApplication = await Application.update(id, {
@@ -27,13 +27,13 @@ async function acceptApplication(_, { id }, context) {
     const eventId = application.event;
     if (!eventId) throw new Error("No event associated with this application");
 
-    const event = await Event.findById(id);
+    const event = await Event.findById(eventId);
+    console.log({ application });
     if (!event) throw new Error("Event no longer exists");
-    console.log(event);
 
     // 6. Add exhibitor in event's exhibitors array
     await Event.update(eventId, {
-        exhibitors: [...event.exhibitors, application.exhibitor],
+        exhibitors: [application.exhibitor],
     });
 
     return updatedApplication;
