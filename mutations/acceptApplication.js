@@ -27,14 +27,35 @@ async function acceptApplication(_, { id }, context) {
     const eventId = application.event;
     if (!eventId) throw new Error("No event associated with this application");
 
-    const event = await Event.findById(eventId);
-    console.log({ application });
+    const event = await Event.model.findById(eventId).populate("exhibitors");
     if (!event) throw new Error("Event no longer exists");
 
     // 6. Add exhibitor in event's exhibitors array
-    await Event.update(eventId, {
-        exhibitors: [application.exhibitor],
+    const result = await context.executeGraphQL({
+        query: `
+          mutation UpdateEventExhibitors($eventId: ID!, $exhibitorId: ID!) {
+            updateEvent(
+              id: $eventId,
+              data: { exhibitors: { connect: { id: $exhibitorId } } }
+            ) {
+              id
+              exhibitors {
+                id,
+                name,
+                email
+              }
+            }
+          }
+    `,
+        variables: {
+            eventId: eventId.toString(),
+            exhibitorId: application.exhibitor.toString(),
+        },
     });
+    if (result.errors) {
+        console.log(result.errors);
+        throw new Error("Failed to update event exhibitors");
+    }
 
     return updatedApplication;
 }
