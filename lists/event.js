@@ -11,13 +11,11 @@ const Event = {
         exhibitors: {
             type: Relationship,
             many: true,
-            defaultValue: [],
             ref: "User",
         },
         attendees: {
             type: Relationship,
             many: true,
-            defaultValue: [],
             ref: "User",
         },
     },
