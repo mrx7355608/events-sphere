@@ -18,21 +18,9 @@ async function rejectApplication(_, { id }, context) {
     if (application.status === "rejected")
         throw new Error("Application already rejected");
 
-    // 4. Accept application
+    // 4. Reject application
     const updatedApplication = await Application.update(id, {
         status: "rejected",
-    });
-
-    // 5. Check if event still exists
-    const eventId = application.event;
-    if (!eventId) throw new Error("No event associated with this application");
-
-    const event = await Event.findById(eventId);
-    if (!event) throw new Error("Event no longer exists");
-
-    // 6. Add exhibitor in event's exhibitors array
-    await Event.update(eventId, {
-        exhibitors: { disconnect: [{ id: application.exhibitor }] },
     });
 
     return updatedApplication;

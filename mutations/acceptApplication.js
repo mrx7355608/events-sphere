@@ -15,8 +15,8 @@ async function acceptApplication(_, { id }, context) {
     if (!application) throw new Error("Application not found");
 
     // 3. Check if application is already accepted
-    // if (application.status === "approved")
-    //     throw new Error("Application already approved");
+    if (application.status === "approved")
+        throw new Error("Application already approved");
 
     // 4. Accept application
     const updatedApplication = await Application.update(id, {

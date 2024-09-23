@@ -31,7 +31,7 @@ const User = {
         defaultSort: "name",
     },
     access: {
-        read: access.userIsAdminOrOwner,
+        read: access.isSignedIn,
         update: access.userIsAdminOrOwner,
         // create: access.userIsAdmin,
         delete: access.userIsAdmin,
