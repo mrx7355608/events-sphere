@@ -5,6 +5,7 @@ const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const keystone = require("./keystone");
 const access = require("./utils/accessControl");
 const acceptApplication = require("./mutations/acceptApplication");
+const rejectApplication = require("./mutations/rejectApplication");
 
 const PROJECT_NAME = "Events Sphere";
 
@@ -26,6 +27,10 @@ keystone.extendGraphQLSchema({
         {
             schema: "acceptApplication(id: ID!): Application",
             resolver: acceptApplication,
+        },
+        {
+            schema: "rejectApplication(id: ID!): Application",
+            resolver: rejectApplication,
         },
     ],
 });
