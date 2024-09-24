@@ -83,7 +83,7 @@ const Feedback = {
             type: Relationship,
             isRequired: true,
             many: false,
-            ref: "Event",
+            ref: "Event.feedbacks",
         },
     },
 

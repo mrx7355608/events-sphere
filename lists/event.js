@@ -18,6 +18,11 @@ const Event = {
             many: true,
             ref: "User",
         },
+        feedbacks: {
+            type: Relationship,
+            many: true,
+            ref: "Feedback.event",
+        },
     },
     adminConfig: {
         defaultColumns: "location, theme, date",
