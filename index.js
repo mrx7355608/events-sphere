@@ -14,6 +14,7 @@ const PROJECT_NAME = "Events Sphere";
 keystone.createList("User", require("./lists/user"));
 keystone.createList("Event", require("./lists/event"));
 keystone.createList("Application", require("./lists/application"));
+keystone.createList("Feedback", require("./lists/feedback"));
 
 // Setup auth strategy
 const authStrategy = keystone.createAuthStrategy({
