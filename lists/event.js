@@ -24,17 +24,39 @@ const Event = {
         defaultSort: "date",
     },
     access: {
-        // read: accessControls.isSignedIn,
-        // create: accessControls.userIsAdmin,
-        // update: accessControls.userIsAdmin,
+        read: accessControls.isSignedIn,
+        create: accessControls.userIsAdmin,
+        update: ({ authentication, originalInput }) => {
+            const user = authentication.item;
+            if (!user) {
+                return false;
+            }
+
+            if (user.role === "admin") {
+                return true;
+            } else if (user.role === "attendee") {
+                /*
+                 * If an attendee is trying to update the event:
+                 * 1st - Check if he is only modifying the "attendees" field
+                 * 2nd - Check if he is not supplying the { disconnectAll: true } query
+                 * If both conditions satisfy, let him update
+                 */
+                const updateKeys = Object.keys(originalInput);
+                if (
+                    updateKeys.includes("attendees") &&
+                    !originalInput.attendees.disconnectAll
+                ) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
+        },
         delete: accessControls.userIsAdmin,
     },
-    hooks: {
-        resolveInput: ({ resolvedData }) => {
-            console.log({ resolvedData });
-            return resolvedData;
-        },
-    },
+    hooks: {},
     labelField: "title",
 };
 
