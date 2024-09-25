@@ -1,4 +1,4 @@
-require("dotenv/config");
+require("dotenv").config();
 const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
