@@ -3,6 +3,7 @@ const {
     AuthedRelationship,
 } = require("@keystonejs/fields-authed-relationship");
 const accessControls = require("../utils/accessControl");
+const { applicationValidator } = require("../validators");
 
 module.exports = {
     fields: {
@@ -64,6 +65,9 @@ module.exports = {
     },
 
     hooks: {
+        validateInput: ({ resolvedData }) => {
+            applicationValidator(resolvedData);
+        },
         beforeChange: ({ context, addValidationError }) => {
             const { authedItem: user } = context;
             if (user) {

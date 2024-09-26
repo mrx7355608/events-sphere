@@ -1,5 +1,6 @@
 const { Text, DateTime, Relationship } = require("@keystonejs/fields");
 const accessControls = require("../utils/accessControl");
+const { eventValidator } = require("../validators");
 
 const Event = {
     fields: {
@@ -64,7 +65,11 @@ const Event = {
         },
         delete: accessControls.userIsAdmin,
     },
-    hooks: {},
+    hooks: {
+        validateInput: ({ resolvedData }) => {
+            eventValidator(resolvedData);
+        },
+    },
     labelField: "title",
 };
 

@@ -4,6 +4,7 @@ const {
     AuthedRelationship,
 } = require("@keystonejs/fields-authed-relationship/dist/fields-authed-relationship.cjs.prod");
 const keystone = require("../keystone");
+const { feedbackValidator } = require("../validators");
 
 // Access control function for update and delete operations
 const userIsAdminOrOwner = ({ existingItem, authentication }) => {
@@ -118,6 +119,12 @@ const Feedback = {
         },
         update: userIsAdminOrOwner,
         delete: userIsAdminOrOwner,
+    },
+
+    hooks: {
+        validateInput: ({ resolvedData }) => {
+            feedbackValidator(resolvedData);
+        },
     },
 };
 
