@@ -13,6 +13,7 @@
     "scripts": {
         "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true NODE_OPTIONS=--openssl-legacy-provider nodemon --signal SIGTERM --exec keystone dev",
         "build": "cross-env NODE_ENV=production keystone build",
+        "test": "jest --watch",
         "start": "cross-env NODE_ENV=production keystone start"
     },
     "dependencies": {
@@ -25,6 +26,7 @@
         "@keystonejs/keystone": "^19.3.3",
         "cross-env": "^7.0.3",
         "dotenv": "^16.4.5",
+        "jest": "^29.7.0",
         "webpack": "^5.94.0"
     },
     "devDependencies": {

@@ -8,13 +8,10 @@ const acceptApplication = require("./mutations/acceptApplication");
 const rejectApplication = require("./mutations/rejectApplication");
 const registerForEvent = require("./mutations/registerForEvent");
 
-const PROJECT_NAME = "Events Sphere";
-
 // Setup keystone lists
-keystone.createList("User", require("./lists/user"));
-keystone.createList("Event", require("./lists/event"));
-keystone.createList("Application", require("./lists/application"));
-keystone.createList("Feedback", require("./lists/feedback"));
+require("./lists");
+
+const PROJECT_NAME = "Events Sphere";
 
 // Setup auth strategy
 const authStrategy = keystone.createAuthStrategy({
