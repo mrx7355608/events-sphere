@@ -3,7 +3,7 @@ const keystone = require("../keystone");
 async function acceptApplication(_, { id }, context) {
     // 1. Check if user is authenticated & is an admin user
     const user = context.authedItem;
-    if (!user) throw new Error("You must be logged in to accpet applications");
+    if (!user) throw new Error("You must be logged in to approve applications");
 
     if (user.role !== "admin") throw new Error("Access Denied");
 
