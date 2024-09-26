@@ -12,16 +12,19 @@ const Event = {
             type: Relationship,
             many: true,
             ref: "User",
+            defaultValue: [],
         },
         attendees: {
             type: Relationship,
             many: true,
             ref: "User",
+            defaultValue: [],
         },
         feedbacks: {
             type: Relationship,
             many: true,
             ref: "Feedback.event",
+            defaultValue: [],
         },
     },
     adminConfig: {
