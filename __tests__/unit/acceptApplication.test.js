@@ -34,7 +34,9 @@ describe("Testing acceptApplication Custom mutation", () => {
         };
 
         // Mocked "findById" function on applicationList.adapter
-        applicationList.adapter.findById = jest.fn().mockReturnValueOnce(null);
+        applicationList.adapter.findById = jest
+            .fn()
+            .mockReturnValueOnce(Promise.resolve(null));
 
         await expect(
             acceptApplication(null, { id: "" }, context)
@@ -48,9 +50,11 @@ describe("Testing acceptApplication Custom mutation", () => {
             },
         };
 
-        applicationList.adapter.findById = jest.fn().mockReturnValueOnce({
-            status: "approved",
-        });
+        applicationList.adapter.findById = jest.fn().mockReturnValueOnce(
+            Promise.resolve({
+                status: "approved",
+            })
+        );
 
         await expect(
             acceptApplication(null, { id: "" }, context)
@@ -70,9 +74,11 @@ describe("Testing acceptApplication Custom mutation", () => {
                 status: "approved",
             })
         );
-        applicationList.adapter.findById = jest.fn().mockReturnValueOnce({
-            event: null,
-        });
+        applicationList.adapter.findById = jest.fn().mockReturnValueOnce(
+            Promise.resolve({
+                event: null,
+            })
+        );
 
         await expect(
             acceptApplication(null, { id: "" }, context)
@@ -92,9 +98,11 @@ describe("Testing acceptApplication Custom mutation", () => {
                 status: "approved",
             })
         );
-        applicationList.adapter.findById = jest.fn().mockReturnValueOnce({
-            event: "some-event-id",
-        });
+        applicationList.adapter.findById = jest.fn().mockReturnValueOnce(
+            Promise.resolve({
+                event: "some-event-id",
+            })
+        );
         eventList.adapter.findById = jest.fn().mockReturnValueOnce(null);
 
         await expect(
