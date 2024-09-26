@@ -1,4 +1,5 @@
 const keystone = require("../keystone");
+const { eventList } = require("../lists");
 
 const getEventAttendees = `
     query getEventAttendees($eventId: ID!){
@@ -38,21 +39,25 @@ const registerAttendeeMutation = `
 async function registerForEvent(_, { id }, context) {
     // 1. Check if user is authenticated & is an admin user
     const user = context.authedItem;
-    if (!user) throw new Error("You must be logged in to accpet applications");
+    if (!user) throw new Error("You must be logged in to register for events");
 
-    // 2. Check if id is provided
+    // 2. Check user role
+    if (user.role === "exhibitor") {
+        throw new Error(
+            "You cannot register for event, instead send a joining application"
+        );
+    }
+
+    // 3. Check if id is provided
     // (idk why but maybe, mutation is not gonna execute until id is
     // provided, so it's kindof a useless check here)
     if (!id) throw new Error("Event id is missing");
 
     // TODO: check if ID is a mongodb id or some random string
 
-    // 3. Extract event model from keystone adapters
-    const { Event } = keystone.adapter.listAdapters;
-
     // 4. Check if event exists
-    const event = await Event.findById(id);
-    if (!event) throw new Error("Event not found");
+    const event = await eventList.adapter.findById(id);
+    if (!event) throw new Error("Event no longer exists");
 
     // 5. Check if attendee is already registered for this event
     const result = await keystone.executeGraphQL({
@@ -69,7 +74,8 @@ async function registerForEvent(_, { id }, context) {
     // Event.attendees is an array containing objects with ids
     // => [{ id: "12343" }, { id: "4235" }]
     const attendeesIds = result.data.Event.attendees.map((obj) => obj.id);
-    if (attendeesIds.includes(user.id.toString())) {
+    const userIdStr = user.id.toString();
+    if (attendeesIds.includes(userIdStr)) {
         throw new Error("You have already registered for this event");
     }
 
