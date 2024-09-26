@@ -1,17 +1,14 @@
-const keystone = require("../keystone");
+const { applicationList, eventList } = require("../lists");
 
 async function rejectApplication(_, { id }, context) {
     // 1. Check if user is authenticated & is an admin user
     const user = context.authedItem;
-    if (!user) throw new Error("You must be logged in to accpet applications");
+    if (!user) throw new Error("You must be logged in to reject applications");
 
     if (user.role !== "admin") throw new Error("Access Denied");
 
-    // Extract mongoose models from keystone instance
-    const { Application, Event } = keystone.adapter.listAdapters;
-
     // 2. Check if application exists
-    const application = await Application.findById(id);
+    const application = await applicationList.adapter.findById(id);
     if (!application) throw new Error("Application not found");
 
     // 3. Check if application is already rejected
@@ -19,9 +16,43 @@ async function rejectApplication(_, { id }, context) {
         throw new Error("Application already rejected");
 
     // 4. Reject application
-    const updatedApplication = await Application.update(id, {
+    const updatedApplication = await applicationList.adapter.update(id, {
         status: "rejected",
     });
+
+    // 5. Check for event
+    const eventId = application.event;
+    if (!eventId) throw new Error("No event associated with this application");
+
+    const event = await eventList.adapter.findById(eventId);
+    if (!event) throw new Error("Event no longer exists");
+
+    // 6. Remove user from event's exhibitors
+    const result = await context.executeGraphQL({
+        query: `
+          mutation UpdateEventExhibitors($eventId: ID!, $exhibitorId: ID!) {
+            updateEvent(
+              id: $eventId,
+              data: { exhibitors: { disconnect: { id: $exhibitorId } } }
+            ) {
+              id
+              exhibitors {
+                id,
+                name,
+                email
+              }
+            }
+          }
+    `,
+        variables: {
+            eventId: eventId.toString(),
+            exhibitorId: application.exhibitor.toString(),
+        },
+    });
+    if (result.errors) {
+        console.log(result.errors);
+        throw new Error("Failed to update event exhibitors");
+    }
 
     return updatedApplication;
 }
