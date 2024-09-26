@@ -28,13 +28,13 @@ const userSchema = Joi.object({
         }),
 
     role: Joi.string()
-        .valid("admin", "exhibitor", "attendee")
+        .valid("exhibitor", "attendee")
         .default("attendee")
         .required()
         .messages({
             "string.base": "Role must be a valid string.",
             "any.only":
-                "Role must be one of the following: admin, exhibitor, or attendee.",
+                "Role must be one of the following: exhibitor, or attendee.",
             "any.required": "Role field is mandatory.",
         }),
 });
