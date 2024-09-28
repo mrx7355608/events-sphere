@@ -12,8 +12,9 @@ import {
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
-const UserLogin = () => {
+const Login = () => {
     return (
         <Flex
             minH={"100vh"}
@@ -24,10 +25,6 @@ const UserLogin = () => {
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
                 <Stack align={"center"}>
                     <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-                    <Text fontSize={"lg"} color={"gray.600"}>
-                        to enjoy all of our cool{" "}
-                        <Text color={"blue.400"}>features</Text> ✌️
-                    </Text>
                 </Stack>
                 <Box
                     rounded={"lg"}
@@ -63,6 +60,19 @@ const UserLogin = () => {
                                 Sign in
                             </Button>
                         </Stack>
+                        <Stack pt={6}>
+                            <Text align={"center"}>
+                                Don't have an account ?{" "}
+                                <Button
+                                    as={Link}
+                                    to="/register"
+                                    variant="link"
+                                    color={"blue.400"}
+                                >
+                                    Register
+                                </Button>
+                            </Text>
+                        </Stack>
                     </Stack>
                 </Box>
             </Stack>
@@ -70,4 +80,4 @@ const UserLogin = () => {
     );
 };
 
-export default UserLogin;
+export default Login;
