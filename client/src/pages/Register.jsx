@@ -13,12 +13,12 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import { Link } from 'react-router-dom'
 
-const UserRegistration = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
@@ -87,7 +87,7 @@ const UserRegistration = () => {
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already a user? <Link color={'blue.400'}>Login</Link>
+                Already a user? <Button as={Link} to="/login" variant="link" color={'blue.400'}>Login</Button>
               </Text>
             </Stack>
           </Stack>
@@ -97,4 +97,4 @@ const UserRegistration = () => {
   )
 }
 
-export default UserRegistration
+export default Register
