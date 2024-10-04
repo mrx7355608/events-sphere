@@ -4,17 +4,23 @@ import {
     Flex,
     HStack,
     IconButton,
+    Button,
     useDisclosure,
     useColorModeValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import AvatarWithMenu from "./AvatarWithMenu";
 import MyNavLink from "./MyNavLink";
+import useUserStore from "../../store/user";
+import { IoLogInOutline } from "react-icons/io5";
+import { useState } from "react";
 
 const links = ["Expo", "Contact"];
 
 export default function Simple() {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { user, loginUser } = useUserStore();
+    const [loading, setLoading] = useState(false);
 
     return (
         <>
@@ -48,7 +54,21 @@ export default function Simple() {
                     </HStack>
 
                     {/* User avatar with menu */}
-                    <AvatarWithMenu />
+                    {user ? (
+                        <AvatarWithMenu />
+                    ) : (
+                        <Button
+                            leftIcon={<IoLogInOutline size={21} />}
+                            variant={"outline"}
+                            borderColor="black"
+                            isLoading={loading}
+                            disabled={loading}
+                            loadingText={"Logging in..."}
+                            onClick={loginMutation}
+                        >
+                            Login
+                        </Button>
+                    )}
                 </Flex>
 
                 {/* Mobile Menu */}
@@ -64,4 +84,17 @@ export default function Simple() {
             </Box>
         </>
     );
+
+    function loginMutation() {
+        // TODO: add login here with graphql
+
+        setLoading(true);
+
+        setTimeout(() => {
+            setLoading(false);
+            loginUser({
+                name: "Fawad Imran",
+            });
+        }, 3000);
+    }
 }

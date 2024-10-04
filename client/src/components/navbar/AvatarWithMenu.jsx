@@ -10,8 +10,11 @@ import {
     Avatar,
 } from "@chakra-ui/react";
 import { IoLogOutOutline } from "react-icons/io5";
+import useUserStore from "../../store/user";
 
 const AvatarWithMenu = () => {
+    const { logoutUser } = useUserStore();
+
     return (
         <Flex alignItems={"center"}>
             <Menu>
@@ -33,7 +36,11 @@ const AvatarWithMenu = () => {
                     <MenuItem>Link 1</MenuItem>
                     <MenuItem>Link 2</MenuItem>
                     <MenuDivider />
-                    <MenuItem fontWeight={"regular"} color="red.500">
+                    <MenuItem
+                        fontWeight={"regular"}
+                        color="red.500"
+                        onClick={logoutMutation}
+                    >
                         <IoLogOutOutline size={20} />
                         <Text ml={2} fontSize={"sm"}>
                             Log out
@@ -43,6 +50,12 @@ const AvatarWithMenu = () => {
             </Menu>
         </Flex>
     );
+
+    function logoutMutation() {
+        // TODO: add here graphql mutation for logout
+
+        logoutUser(); // Unset user state from store;
+    }
 };
 
 export default AvatarWithMenu;
