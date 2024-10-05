@@ -1,25 +1,40 @@
 import React from 'react'
 import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  HStack,
-  InputRightElement,
-  Stack,
-  Button,
-  Heading,
-  Text,
-  useColorModeValue,
+    Flex,
+    Box,
+    FormControl,
+    FormLabel,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Stack,
+    Button,
+    Heading,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
+import { SIGNUP_MUTATION } from '../mutations/authMutations'
+import { useMutation } from "@apollo/client"
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
+    const [registerUserMutation, {data, loading, error}] = useMutation(SIGNUP_MUTATION);
+    const [details, setDetails] = useState({
+        name: "",
+        email: "",
+        password: "",
+        role: "",
+    })
+
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setDetails({ ...details,  [name]:value });
+    }
+
+        
 
   return (
      <Flex
@@ -42,28 +57,18 @@ const Register = () => {
           boxShadow={'lg'}
           p={8}>
           <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-            </HStack>
+            <FormControl id="firstName" isRequired>
+              <FormLabel>Full Name</FormLabel>
+              <Input type="text" name="name" onChange={onChange} />
+            </FormControl>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input type="email" name="email"/>
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} />
+                <Input type={showPassword ? 'text' : 'password'} name="password" />
                 <InputRightElement h={'full'}>
                   <Button
                     variant={'ghost'}
@@ -75,14 +80,17 @@ const Register = () => {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText="Submitting"
+                loadingText="Creating account..."
                 size="lg"
                 bg={'blue.400'}
                 color={'white'}
+                isLoading={loading}
+                disabled={loading}
+                onClick={() => registerUserMutation(details)}
                 _hover={{
                   bg: 'blue.500',
                 }}>
-                Sign up
+                Create account
               </Button>
             </Stack>
             <Stack pt={6}>
@@ -95,6 +103,7 @@ const Register = () => {
       </Stack>
     </Flex>
   )
+
 }
 
 export default Register
