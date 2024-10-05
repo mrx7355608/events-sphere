@@ -86,7 +86,7 @@ const Register = () => {
                 color={'white'}
                 isLoading={loading}
                 disabled={loading}
-                onClick={() => registerUserMutation(details)}
+                onClick={() => registerUserMutation({ variables: details })}
                 _hover={{
                   bg: 'blue.500',
                 }}>

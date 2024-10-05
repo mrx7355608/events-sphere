@@ -13,8 +13,20 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { LOGIN_MUTATION } from "../mutations/authMutations";
 
 const Login = () => {
+    const [creds, setCreds] = useState({
+        email: "",
+        password: "",
+    })
+    const [loginUserMutation, { data, error, loading }] = useMutation(LOGIN_MUTATION)
+
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setCreds({ ...creds, [name]:value });
+    }
+
     return (
         <Flex
             minH={"100vh"}
@@ -35,11 +47,11 @@ const Login = () => {
                     <Stack spacing={4}>
                         <FormControl id="email">
                             <FormLabel>Email address</FormLabel>
-                            <Input type="email" />
+                            <Input type="email" name="email" onChange={onChange} />
                         </FormControl>
                         <FormControl id="password">
                             <FormLabel>Password</FormLabel>
-                            <Input type="password" />
+                            <Input type="password" name="password" onChange={onChange} />
                         </FormControl>
                         <Stack spacing={10}>
                             <Stack
@@ -53,6 +65,10 @@ const Login = () => {
                             <Button
                                 bg={"blue.400"}
                                 color={"white"}
+                                onClick={() => loginUserMutation({ variables: creds })}
+                                loadingText={"Logging in..."}
+                                isLoading={loading}
+                                disabled={loading}
                                 _hover={{
                                     bg: "blue.500",
                                 }}
