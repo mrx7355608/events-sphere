@@ -11,9 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { IoLogOutOutline } from "react-icons/io5";
 import useUserStore from "../../store/user";
+import { useMutation } from "@apollo/client"
+import { LOGOUT_MUTATION } from "../../mutations/authMutations";
 
 const AvatarWithMenu = () => {
     const { logoutUser } = useUserStore();
+    const [logoutUserMutation, { data, loading, error }] = useMutation(LOGOUT_MUTATION);
 
     return (
         <Flex alignItems={"center"}>
@@ -39,23 +42,21 @@ const AvatarWithMenu = () => {
                     <MenuItem
                         fontWeight={"regular"}
                         color="red.500"
-                        onClick={logoutMutation}
+                        onClick={() => {
+                            if (loading) return;
+                            logoutUserMutation();
+                            logoutUser();// unset user from store
+                        }}
                     >
-                        <IoLogOutOutline size={20} />
+                        {!loading ? <IoLogOutOutline size={20} /> : <Spinner/> }
                         <Text ml={2} fontSize={"sm"}>
-                            Log out
+                            { loading ? "Logging out..." : "Log out" }
                         </Text>
                     </MenuItem>
                 </MenuList>
             </Menu>
         </Flex>
     );
-
-    function logoutMutation() {
-        // TODO: add here graphql mutation for logout
-
-        logoutUser(); // Unset user state from store;
-    }
 };
 
 export default AvatarWithMenu;
