@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
     Flex,
     Box,
@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { LOGIN_MUTATION } from "../mutations/authMutations";
+import FormError from "../components/form/FormError";
 
 const Login = () => {
     const [creds, setCreds] = useState({
@@ -26,6 +27,10 @@ const Login = () => {
         const { name, value } = e.target;
         setCreds({ ...creds, [name]:value });
     }
+
+    useEffect(() => {
+      loginUser(data) // update user state in store
+    }, [data])
 
     return (
         <Flex
@@ -44,6 +49,7 @@ const Login = () => {
                     boxShadow={"lg"}
                     p={8}
                 >
+                    { error && <FormError error={error} /> }
                     <Stack spacing={4}>
                         <FormControl id="email">
                             <FormLabel>Email address</FormLabel>

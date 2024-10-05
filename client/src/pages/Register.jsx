@@ -18,6 +18,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import { SIGNUP_MUTATION } from '../mutations/authMutations'
 import { useMutation } from "@apollo/client"
+import FormError from "../components/form/FormError";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -56,6 +57,7 @@ const Register = () => {
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}>
+            { error && <FormError error={error} /> }
           <Stack spacing={4}>
             <FormControl id="firstName" isRequired>
               <FormLabel>Full Name</FormLabel>
