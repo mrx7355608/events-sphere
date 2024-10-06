@@ -13,14 +13,13 @@ import AvatarWithMenu from "./AvatarWithMenu";
 import MyNavLink from "./MyNavLink";
 import useUserStore from "../../store/user";
 import { IoLogInOutline } from "react-icons/io5";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const links = ["Expo", "Contact"];
 
 export default function Simple() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { user, loginUser } = useUserStore();
-    const [loading, setLoading] = useState(false);
+    const { user } = useUserStore();
 
     return (
         <>
@@ -57,17 +56,15 @@ export default function Simple() {
                     {user ? (
                         <AvatarWithMenu />
                     ) : (
-                        <Button
-                            leftIcon={<IoLogInOutline size={21} />}
-                            variant={"outline"}
-                            borderColor="black"
-                            isLoading={loading}
-                            disabled={loading}
-                            loadingText={"Logging in..."}
-                            onClick={loginMutation}
-                        >
-                            Login
-                        </Button>
+                        <Link to="/login">
+                            <Button
+                                leftIcon={<IoLogInOutline size={21} />}
+                                variant={"outline"}
+                                borderColor="black"
+                            >
+                                Login
+                            </Button>
+                        </Link>
                     )}
                 </Flex>
 
@@ -84,17 +81,4 @@ export default function Simple() {
             </Box>
         </>
     );
-
-    function loginMutation() {
-        // TODO: add login here with graphql
-
-        setLoading(true);
-
-        setTimeout(() => {
-            setLoading(false);
-            loginUser({
-                name: "Fawad Imran",
-            });
-        }, 3000);
-    }
 }
