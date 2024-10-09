@@ -15,22 +15,30 @@ import {
 import { Link } from "react-router-dom";
 import { LOGIN_MUTATION } from "../mutations/authMutations";
 import FormError from "../components/form/FormError";
+import { useMutation } from "@apollo/client";
+import useUserStore from "../store/user";
 
 const Login = () => {
     const [creds, setCreds] = useState({
         email: "",
         password: "",
-    })
-    const [loginUserMutation, { data, error, loading }] = useMutation(LOGIN_MUTATION)
+    });
+    const [loginUserMutation, { data, error, loading }] = useMutation(
+        LOGIN_MUTATION
+    );
+
+    const { loginUser } = useUserStore();
 
     const onChange = (e) => {
         const { name, value } = e.target;
-        setCreds({ ...creds, [name]:value });
-    }
+        setCreds({ ...creds, [name]: value });
+    };
+
+    console.log({ error });
 
     useEffect(() => {
-      loginUser(data) // update user state in store
-    }, [data])
+        loginUser(data); // update user state in store
+    }, [data]);
 
     return (
         <Flex
@@ -49,15 +57,23 @@ const Login = () => {
                     boxShadow={"lg"}
                     p={8}
                 >
-                    { error && <FormError error={error} /> }
+                    {error && <FormError error={error.message} />}
                     <Stack spacing={4}>
                         <FormControl id="email">
                             <FormLabel>Email address</FormLabel>
-                            <Input type="email" name="email" onChange={onChange} />
+                            <Input
+                                type="email"
+                                name="email"
+                                onChange={onChange}
+                            />
                         </FormControl>
                         <FormControl id="password">
                             <FormLabel>Password</FormLabel>
-                            <Input type="password" name="password" onChange={onChange} />
+                            <Input
+                                type="password"
+                                name="password"
+                                onChange={onChange}
+                            />
                         </FormControl>
                         <Stack spacing={10}>
                             <Stack
@@ -71,7 +87,9 @@ const Login = () => {
                             <Button
                                 bg={"blue.400"}
                                 color={"white"}
-                                onClick={() => loginUserMutation({ variables: creds })}
+                                onClick={() =>
+                                    loginUserMutation({ variables: creds })
+                                }
                                 loadingText={"Logging in..."}
                                 isLoading={loading}
                                 disabled={loading}
@@ -84,7 +102,7 @@ const Login = () => {
                         </Stack>
                         <Stack pt={6}>
                             <Text align={"center"}>
-                                Don't have an account ?{" "}
+                                Don&#39;t have an account ?{" "}
                                 <Button
                                     as={Link}
                                     to="/register"
