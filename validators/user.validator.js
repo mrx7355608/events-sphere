@@ -14,9 +14,11 @@ const userSchema = Joi.object({
         "any.required": "Email field is mandatory.",
     }),
 
-    password: Joi.string().required().messages({
+    password: Joi.string().min(8).max(20).required().messages({
         "string.base": "Password must be a valid string.",
         "string.empty": "Password is required.",
+        "string.min": "Password should be 8 characters long atleast.",
+        "string.max": "Password cannot be longer than 20 characters.",
         "any.required": "Password field is mandatory.",
     }),
 

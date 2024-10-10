@@ -12,13 +12,15 @@ import {
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_MUTATION } from "../mutations/authMutations";
 import FormError from "../components/form/FormError";
 import { useMutation } from "@apollo/client";
 import useUserStore from "../store/user";
 
 const Login = () => {
+    const { loginUser } = useUserStore();
+    const navigate = useNavigate();
     const [creds, setCreds] = useState({
         email: "",
         password: "",
@@ -27,17 +29,15 @@ const Login = () => {
         LOGIN_MUTATION
     );
 
-    const { loginUser } = useUserStore();
-
     const onChange = (e) => {
         const { name, value } = e.target;
         setCreds({ ...creds, [name]: value });
     };
 
-    console.log({ error });
-
     useEffect(() => {
+        if (!data) return;
         loginUser(data); // update user state in store
+        navigate("/");
     }, [data]);
 
     return (

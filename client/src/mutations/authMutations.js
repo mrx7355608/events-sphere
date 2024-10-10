@@ -8,7 +8,7 @@ const LOGIN_MUTATION = gql`
                 name
                 email
                 role
-                profilePicture
+                profile_picture
             }
         }
     }

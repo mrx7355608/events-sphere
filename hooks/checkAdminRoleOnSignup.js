@@ -1,11 +1,11 @@
 const { userValidator } = require("../validators");
 
-module.exports = ({ resolvedData, addFieldValidationError, context }) => {
+module.exports = ({ originalInput, addFieldValidationError, context }) => {
     // Validate user fields
-    userValidator(resolvedData);
+    userValidator(originalInput);
 
     const { authedItem: user } = context;
-    if (resolvedData.role.toLowerCase() === "admin") {
+    if (originalInput.role.toLowerCase() === "admin") {
         if (user && user.role.toLowerCase() === "admin") {
             return true;
         }
