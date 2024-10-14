@@ -1,9 +1,8 @@
-import React from 'react'
+import EventList from "./EventList";
 
 const AttendeeInterface = () => {
-  return (
-    <div>AttendeeInterface</div>
-  )
-}
+    return <EventList />;
+};
 
-export default AttendeeInterface
+export default AttendeeInterface;
+

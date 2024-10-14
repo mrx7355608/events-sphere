@@ -7,6 +7,7 @@ const GET_LOGGEDIN_USER = gql`
             name
             profile_picture
             email
+            role
         }
     }
 `;

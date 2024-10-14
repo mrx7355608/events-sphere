@@ -35,9 +35,16 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if (!data) return;
-        loginUser(data); // update user state in store
-        navigate("/");
+        if (!data || !data.authenticateUserWithPassword) return;
+
+        const { item } = data.authenticateUserWithPassword;
+        loginUser(item); // update user state in store
+
+        if (item.role === "attendee") {
+            navigate("/attendee-dashboard");
+        } else {
+            navigate("/exhibitor-portal");
+        }
     }, [data]);
 
     return (

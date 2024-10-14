@@ -8,6 +8,7 @@ import {
     ApolloProvider,
     createHttpLink,
 } from "@apollo/client";
+import { BrowserRouter } from "react-router-dom";
 
 const link = createHttpLink({
     uri: import.meta.env.VITE_SERVER_URL,
@@ -23,7 +24,9 @@ createRoot(document.getElementById("root")).render(
     <StrictMode>
         <ApolloProvider client={client}>
             <ChakraProvider>
-                <App />
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
             </ChakraProvider>
         </ApolloProvider>
     </StrictMode>
