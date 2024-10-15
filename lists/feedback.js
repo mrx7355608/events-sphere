@@ -67,7 +67,7 @@ const Feedback = {
             type: Text,
             isRequired: true,
         },
-        overallExeperience: {
+        overallExperience: {
             type: Select,
             isRequired: true,
             options: "Very good, Good, Neutral, Bad, Very bad",
