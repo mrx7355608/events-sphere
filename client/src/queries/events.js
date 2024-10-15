@@ -20,7 +20,7 @@ const GET_ALL_EVENTS = gql`
             }
             feedbacks {
                 feedback
-                overallExeperience
+                overallExperience
                 user {
                     id
                     email
@@ -31,4 +31,35 @@ const GET_ALL_EVENTS = gql`
     }
 `;
 
-export { GET_ALL_EVENTS };
+const GET_EVENT_BY_ID = gql`
+    query getEventById($id: ID!) {
+        Event(where: { id: $id }) {
+            id
+            title
+            description
+            location
+            date
+            exhibitors {
+                id
+                name
+                email
+            }
+            attendees {
+                id
+                name
+                email
+            }
+            feedbacks {
+                feedback
+                overallExperience
+                user {
+                    id
+                    email
+                    name
+                }
+            }
+        }
+    }
+`;
+
+export { GET_ALL_EVENTS, GET_EVENT_BY_ID };

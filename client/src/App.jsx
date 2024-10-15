@@ -18,19 +18,12 @@ import ExhibitorPortal from "./pages/ExhibitorPortal";
 function App() {
     const { loading, data } = useQuery(GET_LOGGEDIN_USER);
     const { loginUser } = useUserStore();
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (!data || !data.authenticatedUser) return;
 
         // Update user state
         loginUser(data.authenticatedUser);
-
-        if (data.authenticatedUser.role === "attendee") {
-            navigate("/attendee-dashboard");
-        } else {
-            navigate("/exhibitor-portal");
-        }
     }, [data]);
 
     if (loading) {
@@ -51,7 +44,7 @@ function App() {
             <Route path="/expo" element={<RegisterExpo />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/events" element={<EventList />} />
-            <Route path="/event-details" element={<EventDetails />} />
+            <Route path="/event-details/:id" element={<EventDetails />} />
             <Route path="/exhibitor-portal" element={<ExhibitorPortal />} />
             {/* Add more routes for specific pages as needed */}
         </Routes>

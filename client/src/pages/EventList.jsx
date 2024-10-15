@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Box,
     Button,
@@ -31,7 +30,7 @@ const EventList = () => {
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
                     {loading && <Spinner size="lg" />}
                     {error && <Text>Unable to fetch events</Text>}
-                    {events.allEvents &&
+                    {events?.allEvents &&
                         (events.allEvents.length < 1 ? (
                             <Text>No events to show</Text>
                         ) : (
@@ -52,14 +51,20 @@ const EventList = () => {
                                         <Heading size="sm">
                                             {event.title}
                                         </Heading>
-                                        <Text>{event.date}</Text>
+                                        <Text>
+                                            {new Date(event.date)
+                                                .toDateString()
+                                                .slice(4)}
+                                        </Text>
                                         <Text>{event.location}</Text>
                                         <Button
                                             colorScheme="blue"
                                             variant="outline"
                                             mt={4}
                                         >
-                                            <Link href={`/event-details`}>
+                                            <Link
+                                                href={`/event-details/${event.id}`}
+                                            >
                                                 View Details
                                             </Link>
                                         </Button>
