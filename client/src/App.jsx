@@ -14,6 +14,7 @@ import EventList from "./pages/EventList";
 import EventDetails from "./pages/EventDetails";
 import AttendeeInterface from "./pages/AttendeeInterface";
 import ExhibitorPortal from "./pages/ExhibitorPortal";
+import Applications from "./pages/Applications";
 
 function App() {
     const { loading, data } = useQuery(GET_LOGGEDIN_USER);
@@ -46,6 +47,8 @@ function App() {
             <Route path="/events" element={<EventList />} />
             <Route path="/event-details/:id" element={<EventDetails />} />
             <Route path="/exhibitor-portal" element={<ExhibitorPortal />} />
+            <Route path="/applications" element={<Applications />} />
+
             {/* Add more routes for specific pages as needed */}
         </Routes>
     );

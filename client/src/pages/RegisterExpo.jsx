@@ -13,13 +13,16 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  useDisclosure
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
+import RegisterExpoModal from "../components/RegisterExpoModal"
 
 const RegisterExpo = () => {
   const [showPassword, setShowPassword] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
      <Flex
@@ -55,6 +58,7 @@ const RegisterExpo = () => {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
+                onClick={onOpen}
                 loadingText="Submitting"
                 size="lg"
                 bg={'blue.400'}
@@ -64,6 +68,7 @@ const RegisterExpo = () => {
                 }}>
                 Submit
               </Button>
+              <RegisterExpoModal isOpen={isOpen} onClose={onClose} />
             </Stack>
           </Stack>
         </Box>
