@@ -15,7 +15,7 @@ import useUserStore from "../../store/user";
 import { IoLogInOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const links = ["Expo", "Contact", "Events", "Profile"];
+const links = ["Expo", "Contact", "Events", "Profile", "Applications"];
 
 export default function Simple() {
     const { isOpen, onOpen, onClose } = useDisclosure();
