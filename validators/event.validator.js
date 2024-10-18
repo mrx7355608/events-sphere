@@ -29,6 +29,6 @@ const eventSchema = Joi.object({
         "string.empty": "Theme is required.",
         "any.required": "Theme field is mandatory.",
     }),
-});
+}).options({ allowUnknown: true });
 
 module.exports = eventSchema;

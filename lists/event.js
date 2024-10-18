@@ -66,8 +66,10 @@ const Event = {
         delete: accessControls.userIsAdmin,
     },
     hooks: {
-        validateInput: ({ resolvedData }) => {
-            eventValidator(resolvedData);
+        validateInput: ({ operation, resolvedData }) => {
+            if (operation === "create") {
+                eventValidator(resolvedData);
+            }
         },
     },
     labelField: "title",

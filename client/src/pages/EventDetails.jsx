@@ -18,13 +18,13 @@ import { GET_EVENT_BY_ID } from "../queries/events";
 import { useMutation, useQuery } from "@apollo/client";
 import useUserStore from "../store/user";
 import useToastUtils from "../hooks/useToastUtils";
-import { SUBMIT_EVENT_FEEDBACK } from "../mutations/events";
+import { REGISTER_EVENT, SUBMIT_EVENT_FEEDBACK } from "../mutations/events";
 import { useState } from "react";
 
 const EventDetails = () => {
     const { id } = useParams();
     const { user } = useUserStore();
-    const { data, loading, error } = useQuery(GET_EVENT_BY_ID, {
+    const { data, loading, error, refetch } = useQuery(GET_EVENT_BY_ID, {
         variables: { id },
     });
     const [userFeedback, setUserFeedback] = useState("");
@@ -39,6 +39,10 @@ const EventDetails = () => {
         },
     });
 
+    const [registerEventMutation, { loading: loading3 }] = useMutation(
+        REGISTER_EVENT
+    );
+
     if (loading) {
         return <Spinner />;
     }
@@ -47,7 +51,9 @@ const EventDetails = () => {
         return <Text color="red">Unable to fetch event</Text>;
     }
 
-    const isAttendeeOfThisEvent = () => {
+    const isAttendee = () => user.role === "attendee";
+
+    const isAlreadyAttendingEvent = () => {
         const attendeesIDs = data.Event.attendees.map(
             (attendee) => attendee.id
         );
@@ -107,14 +113,31 @@ const EventDetails = () => {
 
             {/* Bookmark Button */}
             <HStack>
-                {isAttendeeOfThisEvent() ? (
-                    <Alert mx={2} status="success" mt={4}>
-                        <AlertIcon />
-                        You are already Registered
-                    </Alert>
+                {isAttendee() ? (
+                    isAlreadyAttendingEvent() ? (
+                        <Alert mx={2} status="success" mt={4}>
+                            <AlertIcon />
+                            You are already Registered
+                        </Alert>
+                    ) : (
+                        <Button
+                            isLoading={loading3}
+                            disabled={loading3}
+                            colorScheme="orange"
+                            mt={4}
+                            onClick={async () => {
+                                await registerEventMutation({
+                                    variables: { eventID: id },
+                                });
+                                await refetch();
+                            }}
+                        >
+                            Register
+                        </Button>
+                    )
                 ) : (
                     <Button colorScheme="orange" mt={4}>
-                        Register
+                        Apply
                     </Button>
                 )}
             </HStack>
@@ -166,7 +189,7 @@ const EventDetails = () => {
     );
 
     async function submitFeedback() {
-        if (!isAttendeeOfThisEvent()) {
+        if (!isAlreadyAttendingEvent()) {
             return showErrorToast(
                 "You cannot give feedback as you are not a part of this event"
             );
@@ -179,6 +202,8 @@ const EventDetails = () => {
         await submitFeedbackMutation();
 
         if (error2) return showErrorToast("Unable to submit feedback");
+
+        await refetch();
         return showSuccessToast("Feedback submitted");
     }
 };

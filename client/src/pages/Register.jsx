@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Flex,
     Box,
@@ -19,6 +19,7 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { SIGNUP_MUTATION } from "../mutations/authMutations";
 import FormError from "../components/form/FormError";
+import useToastUtils from "../hooks/useToastUtils";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +32,8 @@ const Register = () => {
         password: "",
         role: "",
     });
+    const { showSuccessToast } = useToastUtils();
+    const navigate = useNavigate();
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -122,11 +125,18 @@ const Register = () => {
                                 color={"white"}
                                 isLoading={loading}
                                 disabled={loading}
-                                onClick={() => {
-                                    console.log(details);
-                                    registerUserMutation({
+                                onClick={async () => {
+                                    await registerUserMutation({
                                         variables: details,
                                     });
+
+                                    if (!error) {
+                                        showSuccessToast(
+                                            "Account created successfully"
+                                        );
+                                        navigate("/login");
+                                        return;
+                                    }
                                 }}
                                 _hover={{
                                     bg: "blue.500",

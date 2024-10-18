@@ -19,4 +19,16 @@ const SUBMIT_EVENT_FEEDBACK = gql`
     }
 `;
 
-export { SUBMIT_EVENT_FEEDBACK };
+const REGISTER_EVENT = gql`
+    mutation registerEvent($eventID: ID!) {
+        registerForEvent(id: $eventID) {
+            attendees {
+                id
+                email
+                name
+            }
+        }
+    }
+`;
+
+export { SUBMIT_EVENT_FEEDBACK, REGISTER_EVENT };

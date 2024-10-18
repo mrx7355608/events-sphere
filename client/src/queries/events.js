@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const GET_ALL_EVENTS = gql`
-    query getAllEvents {
-        allEvents {
+    query getAllEvents($title: String!) {
+        allEvents(where: { title_contains_i: $title }) {
             id
             title
             description

@@ -13,6 +13,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 import useUserStore from "../../store/user";
 import { useMutation } from "@apollo/client";
 import { LOGOUT_MUTATION } from "../../mutations/authMutations";
+import { Link } from "react-router-dom";
 
 const AvatarWithMenu = () => {
     const { user, logoutUser } = useUserStore();
@@ -31,9 +32,9 @@ const AvatarWithMenu = () => {
                     <Avatar size={"sm"} src={user?.profile_picture} />
                 </MenuButton>
                 <MenuList>
-                    <MenuItem>Link 1</MenuItem>
-                    <MenuItem>Link 2</MenuItem>
-                    <MenuDivider />
+                    <MenuItem as={Link} to="/profile">
+                        Profile
+                    </MenuItem>
                     <MenuItem
                         fontWeight={"regular"}
                         color="red.500"

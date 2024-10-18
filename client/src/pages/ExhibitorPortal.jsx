@@ -1,9 +1,8 @@
-import React from 'react'
+import EventList from "../pages/EventList";
 
 const ExhibitorPortal = () => {
-  return (
-    <div>ExhibitorPortal</div>
-  )
-}
+    return <EventList />;
+};
 
-export default ExhibitorPortal
+export default ExhibitorPortal;
+
